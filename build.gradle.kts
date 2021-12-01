@@ -7,8 +7,8 @@ plugins {
     id("org.jetbrains.compose") version "1.0.0-beta5"
 }
 
-group = "me.fabian"
-version = "1.0"
+group = "com.s452635"
+version = "0.1"
 
 repositories {
     google()
