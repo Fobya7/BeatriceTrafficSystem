@@ -5,7 +5,6 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
 import com.s452635.beatrice.frame.AppContent
-import com.s452635.beatrice.frame.GraphicController
 
 fun main()
 {

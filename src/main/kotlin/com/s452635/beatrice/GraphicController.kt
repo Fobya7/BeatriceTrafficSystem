@@ -1,9 +1,10 @@
-package com.s452635.beatrice.frame
+package com.s452635.beatrice
 
 import androidx.compose.runtime.mutableStateOf
 import com.s452635.beatrice.simulation.LightState
 import com.s452635.beatrice.simulation.TickKind
 import com.s452635.beatrice.simulation.TrafficState
+import com.s452635.beatrice.simulation.generateCars
 import java.lang.Thread.sleep
 import kotlin.random.Random
 
@@ -43,6 +44,7 @@ class GraphicController (
 
     // region threads
 
+    // TODO : car thread -> leave if light green, flash arrow
     private val tickLights = Thread {
         while( isRunning.value )
         {
@@ -148,8 +150,11 @@ class GraphicController (
 
     private fun onTrafficTick()
     {
-        // TODO : traffic generation
-        println( "traffic tick" )
+        west.carQueue.value += generateCars( horTraffic.value )
+        east.carQueue.value += generateCars( horTraffic.value )
+
+        north.carQueue.value += generateCars( verTraffic.value )
+        south.carQueue.value += generateCars( verTraffic.value )
     }
 }
 
