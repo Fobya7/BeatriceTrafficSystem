@@ -11,15 +11,16 @@ import kotlin.random.Random
 class GraphicController (
     lightTickShortLength : Int = 500,
     lightTickLongLength : Int = 1500,
-    trafficTickLength : Int = 1000
+    trafficTickLength : Int = 1000,
+    carSpeed : Int = 200
     )
 {
     // region values
 
-    val west  = Section( LightState.Green )
-    val north = Section( LightState.Green )
-    val east  = Section( LightState.Green )
-    val south = Section( LightState.Green )
+    val west  = Section( LightState.Green, carSpeed )
+    val north = Section( LightState.Red, carSpeed )
+    val east  = Section( LightState.Green, carSpeed )
+    val south = Section( LightState.Yellow, carSpeed )
 
     val horTraffic = mutableStateOf( TrafficState.None )
     val verTraffic = mutableStateOf( TrafficState.None )
@@ -44,7 +45,13 @@ class GraphicController (
 
     // region threads
 
-    // TODO : car thread -> leave if light green, flash arrow
+    private val tickCars = Thread {
+        while( isRunning.value )
+        {
+            sleep( 10 )
+            onCarTick()
+        }
+        }
     private val tickLights = Thread {
         while( isRunning.value )
         {
@@ -88,6 +95,7 @@ class GraphicController (
         isRunning.value = true
         tickLights.start()
         tickTraffic.start()
+        tickCars.start()
     }
 
     // for testing graphics-controller connection
@@ -145,7 +153,6 @@ class GraphicController (
     private fun onLightTick()
     {
         // TODO : light automata reference
-        println( "light tick" )
     }
 
     private fun onTrafficTick()
@@ -156,26 +163,59 @@ class GraphicController (
         north.carQueue.value += generateCars( verTraffic.value )
         south.carQueue.value += generateCars( verTraffic.value )
     }
+
+    private fun onCarTick()
+    {
+        west.tryDrive()
+        north.tryDrive()
+        east.tryDrive()
+        south.tryDrive()
+    }
 }
 
 class Section (
     lightState : LightState,
+    private val carSpeed : Int
     )
 {
     val lightState = mutableStateOf( lightState )
-    val platePowered = mutableStateOf( false )
-
     val carQueue = mutableStateOf( 0 )
-    fun addCarToQueue()
+    val platePowered = mutableStateOf( false )
+    val arrowVisible = mutableStateOf( false )
+
+    private fun checkPlate()
     {
-        if( carQueue.value < 99 ) { carQueue.value +=1 }
-    }
-    fun removeCarFromQueue()
-    {
-        if( carQueue.value > 0 ) { carQueue.value -=1 }
+        platePowered.value = ( carQueue.value != 0 )
     }
 
-    val arrowVisible = mutableStateOf( false )
+    fun addCarToQueue(
+        carAmount : Int = 1
+        )
+    {
+        carQueue.value = minOf( 99, carQueue.value + carAmount )
+        checkPlate()
+    }
+    fun tryDrive()
+    {
+        val driveCar = Thread {
+            showArrow()
+            sleep( carSpeed.toLong() )
+            hideArrow()
+            }
+
+        if (
+            lightState.value == LightState.Green &&
+            carQueue.value > 0 &&
+            !arrowVisible.value
+        )
+        {
+            carQueue.value -=1
+            driveCar.start()
+        }
+
+        checkPlate()
+    }
+
     fun showArrow() { arrowVisible.value = true }
     fun hideArrow() { arrowVisible.value = false }
 }
