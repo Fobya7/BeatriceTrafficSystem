@@ -1,45 +1,43 @@
 package com.s452635.beatrice
 
 import androidx.compose.runtime.mutableStateOf
-import com.s452635.beatrice.simulation.LightState
-import com.s452635.beatrice.simulation.TickKind
-import com.s452635.beatrice.simulation.TrafficState
-import com.s452635.beatrice.simulation.generateCars
+import com.s452635.beatrice.simulation.*
 import java.lang.Thread.sleep
 import kotlin.random.Random
 
 class GraphicController (
-    lightTickShortLength : Int = 500,
-    lightTickLongLength : Int = 1500,
+    private val lightTickShortLength : Int = 500,
+    private val lightTickLongLength : Int = 1500,
     trafficTickLength : Int = 1000,
-    carSpeed : Int = 200
+    carSpeed : Int = 400
     )
 {
     // region values
 
-    val west  = Section( LightState.Green, carSpeed )
+    val west  = Section( LightState.Red, carSpeed )
     val north = Section( LightState.Red, carSpeed )
-    val east  = Section( LightState.Green, carSpeed )
-    val south = Section( LightState.Yellow, carSpeed )
+    val east  = Section( LightState.Red, carSpeed )
+    val south = Section( LightState.Red, carSpeed )
 
-    val horTraffic = mutableStateOf( TrafficState.None )
-    val verTraffic = mutableStateOf( TrafficState.None )
+    private val systemState = mutableStateOf( TrafficState.R_VR )
+    val horTraffic = mutableStateOf( TrafficFlow.None )
+    val verTraffic = mutableStateOf( TrafficFlow.None )
 
     val isRunning = mutableStateOf( false )
-    val lightTickKind = mutableStateOf( TickKind.Long )
+    val lightTickKind = mutableStateOf( TickKind.Short )
     val lightTickPercent = mutableStateOf( 0 )
     val trafficTickPercent = mutableStateOf( 0 )
 
     // endregion
 
     // region callable UI functions
-    fun changeHorTraffic( trafficState : TrafficState )
+    fun changeHorTraffic(trafficFlow : TrafficFlow )
     {
-        horTraffic.value = trafficState
+        horTraffic.value = trafficFlow
     }
-    fun changeVerTraffic( trafficState : TrafficState )
+    fun changeVerTraffic(trafficFlow : TrafficFlow )
     {
-        verTraffic.value = trafficState
+        verTraffic.value = trafficFlow
     }
     // endregion
 
@@ -72,11 +70,6 @@ class GraphicController (
             if( lightTickPercent.value == 100 )
             {
                 lightTickPercent.value = 0
-                lightTickKind.value = when( lightTickKind.value )
-                {
-                    TickKind.Short -> TickKind.Long
-                    TickKind.Long -> TickKind.Short
-                }
                 onLightTick()
             }
         } }
@@ -152,7 +145,37 @@ class GraphicController (
 
     private fun onLightTick()
     {
-        // TODO : light automata reference
+        fun isVerticalFree() : Boolean
+        {
+            return north.platePowered.value || south.platePowered.value
+        }
+        fun isHorizontalFree() : Boolean
+        {
+            return east.platePowered.value || west.platePowered.value
+        }
+
+        systemState.value = when( systemState.value )
+        {
+            TrafficState.G1_R -> {
+                systemState.value.nextState( isVerticalFree() )
+                }
+            TrafficState.R_G1 -> {
+                systemState.value.nextState( isHorizontalFree() )
+                }
+            else -> {
+                systemState.value.nextState( null )
+                }
+        }
+
+        lightTickKind.value = systemState.value.tickKind
+
+        systemState.value.getLights().let {
+            west.lightState.value = it.first
+            east.lightState.value = it.first
+            north.lightState.value = it.second
+            south.lightState.value = it.second
+        }
+
     }
 
     private fun onTrafficTick()

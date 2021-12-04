@@ -16,7 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.s452635.beatrice.simulation.TrafficState
+import com.s452635.beatrice.simulation.TrafficFlow
 
 @Suppress( "unused" )
 @Composable
@@ -39,21 +39,21 @@ fun DescText(
 @Composable
 fun TrafficSlider(
     name : String,
-    trafficState : TrafficState,
-    onValueSet : (TrafficState) -> Unit
+    trafficFlow : TrafficFlow,
+    onValueSet : (TrafficFlow) -> Unit
     )
 {
     var percent by remember { mutableStateOf(0.0f) }
-    fun percentToTraffic() : TrafficState
+    fun percentToTraffic() : TrafficFlow
     {
         return when( percent.toInt() )
         {
-            0    -> TrafficState.None
-            25   -> TrafficState.Some
-            50   -> TrafficState.Mild
-            75   -> TrafficState.Busy
-            100  -> TrafficState.Heavy
-            else -> TrafficState.None
+            0    -> TrafficFlow.None
+            25   -> TrafficFlow.Some
+            50   -> TrafficFlow.Mild
+            75   -> TrafficFlow.Busy
+            100  -> TrafficFlow.Heavy
+            else -> TrafficFlow.None
         }
     }
     var text by remember { mutableStateOf(AnnotatedString("")) }
@@ -61,20 +61,20 @@ fun TrafficSlider(
     {
         fun getColor() : Color
         {
-            return when( trafficState )
+            return when( trafficFlow )
             {
-                TrafficState.None -> Color.White
-                TrafficState.Some -> Color.Yellow
-                TrafficState.Mild -> MixedColors.Orange
-                TrafficState.Busy -> MixedColors.ReddishOrange
-                TrafficState.Heavy -> Color.Red
+                TrafficFlow.None -> Color.White
+                TrafficFlow.Some -> Color.Yellow
+                TrafficFlow.Mild -> MixedColors.Orange
+                TrafficFlow.Busy -> MixedColors.ReddishOrange
+                TrafficFlow.Heavy -> Color.Red
             }
         }
 
         text = buildAnnotatedString {
             append( "$name: " )
             pushStyle( SpanStyle( color = getColor() ) )
-            append( trafficState.name.lowercase() )
+            append( trafficFlow.name.lowercase() )
         }
     }
 

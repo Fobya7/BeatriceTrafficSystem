@@ -2,7 +2,7 @@ package com.s452635.beatrice.simulation
 
 import kotlin.random.Random
 
-fun generateCars( trafficState : TrafficState ) : Int
+fun generateCars(trafficFlow : TrafficFlow ) : Int
 {
     fun summonCar( chance : Int ) : Int
     {
@@ -12,17 +12,17 @@ fun generateCars( trafficState : TrafficState ) : Int
             1 else 0
     }
 
-    return when( trafficState )
+    return when( trafficFlow )
     {
-        TrafficState.None -> 0
-        TrafficState.Some ->
+        TrafficFlow.None -> 0
+        TrafficFlow.Some ->
             summonCar( 10 )
-        TrafficState.Mild ->
+        TrafficFlow.Mild ->
             summonCar( 30 )
-        TrafficState.Busy ->
+        TrafficFlow.Busy ->
             summonCar( 40 ) +
             summonCar( 40 )
-        TrafficState.Heavy ->
+        TrafficFlow.Heavy ->
             summonCar( 80 ) +
             summonCar( 40 )
     }

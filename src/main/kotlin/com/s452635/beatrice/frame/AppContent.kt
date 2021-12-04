@@ -125,13 +125,13 @@ fun AppContent(
     {
         TrafficSlider (
             name = "hor. traffic",
-            trafficState = gc.horTraffic.value,
+            trafficFlow = gc.horTraffic.value,
             onValueSet = gc::changeHorTraffic
             )
         Spacer( Modifier.height( 5.dp ) )
         TrafficSlider(
             name = "ver. traffic",
-            trafficState = gc.verTraffic.value,
+            trafficFlow = gc.verTraffic.value,
             onValueSet = gc::changeVerTraffic
             )
     }
