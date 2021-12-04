@@ -12,7 +12,7 @@ Named in analogy to Matilda, a traffic managing AI from a webcomic Romantically 
 
 ### Implementing Graphics
 
-<div align="center" style="background-color: rgba(90, 90, 90, 0.3)">
+<div align="center" style="background-color: rgba(90, 90, 90, 0.9)">
     <img height="300" src="screenshots/graphics_placed.png"/>
 </div>
 
