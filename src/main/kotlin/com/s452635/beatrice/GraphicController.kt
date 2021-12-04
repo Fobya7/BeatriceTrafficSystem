@@ -180,11 +180,11 @@ class GraphicController (
 
     private fun onTrafficTick()
     {
-        west.carQueue.value += generateCars( horTraffic.value )
-        east.carQueue.value += generateCars( horTraffic.value )
+        west.addCarToQueue( generateCars( horTraffic.value ) )
+        east.addCarToQueue( generateCars( horTraffic.value ) )
 
-        north.carQueue.value += generateCars( verTraffic.value )
-        south.carQueue.value += generateCars( verTraffic.value )
+        north.addCarToQueue( generateCars( verTraffic.value ) )
+        south.addCarToQueue( generateCars( verTraffic.value ) )
     }
 
     private fun onCarTick()
