@@ -8,10 +8,12 @@ Named in analogy to Matilda, a traffic managing AI from a webcomic Romantically 
 
 ### First Sketches
 
+<div align="center"> <img height="360" src="screenshots/sketch1.png"/></div>
+
 ### Design
 
 ### Implementing Graphics
 
-<div align="center"> <img height="300" src="screenshots/graphics_placed.png"/></div>
+<div align="center"> <img height="360" src="screenshots/graphics_placed.png"/></div>
 
 ### Implementing the automata
