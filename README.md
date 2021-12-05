@@ -17,8 +17,6 @@ Priorytety sygnalizacji są następujące:
 
 Celem jest sterowanie światłami, a więc przełączanie czerwonych, żółtych i zielonych we właściwy sposób.
 
-<!-- ADD PROBLEM DESCRIPTION -->
-
 ## Development History & Project Structure Overview
 
 ### First Sketches & the Design
@@ -39,11 +37,8 @@ Mock-ups made in Numbers; mostly unchanged in translation from sketch to image.
 
 ### Implementing Graphics and Data
 
-First thing after the main window that I created, was the
-GraphicController.
-Intended to store sprite states,
-(I call all images in this project sprites)
-became the backbone of this program.
+First thing after the main window that I created, was the GraphicController.
+Intended to store sprite states (I call all images in this project sprites), became the backbone of this program.
 Since it already stores all the data, later on I just added ticked threads that modify it.
 
 Making the sprites took, as it usually does in my projects, most of development time.
@@ -56,7 +51,7 @@ Here's a picture of all sprites placed in their proper positions:
 
 The system is divided into sections, named after cardinal directions.
 Each section includes a light, a car plate, and an arrow.
-The arrows are ment to symbolize cars passing through the intersection.
+The arrows are meant to symbolize cars passing through the intersection.
 
 Then I moved onto the gui components.
 Implemented my first ever slider, so I did.
