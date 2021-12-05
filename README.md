@@ -4,7 +4,18 @@ A simple simulation in compose-desktop hosting a traffic light controller based 
 Class project for "Języki Formalne i Złożoność Obliczeniowa" labs, UAM 2021SZ.
 Named in analogy to Matilda, a traffic managing AI from a webcomic Romantically Apocalyptic.
 
-## Briefing
+## Problem Description (in Polish)
+
+Mamy skrzyżowanie z pętlami indukcyjnymi do ustalania czy ktoś czeka lub czy jest ruch.
+Dla uproszczenia rozpatrujemy ruch z dwóch prostopadłych kierunków.
+
+Priorytety sygnalizacji są następujące:
+1. Jeśli nie ma ruchu to niech przejeżdżają pojazdy z kierunku A.
+2. Jeśli pod koniec pierwszego cyklu, podczas którego przepuszczaliśmy ruch z kierunku A, nadal jadą z kierunku A to niech mają prawo przejazdu jeszcze przez jeden dodatkowy cykl.
+3. Jeśli pod koniec drugiego cyklu kiedy prawo przejazdu miały pojazdy z kierunku A będzie ktoś oczekujący z kierunku B to niech prawo przejazdu dostanie kierunek B (na jeden cykl).
+4. Jeśli pod koniec drugiego cyklu kiedy prawo przejazdu miały pojazdy z kierunku B nie będzie nikogo oczekującego z kierunku A to niech prawo przejazdu pozostanie przy kierunku B na jeden dodatkowy cykl.
+
+Celem jest sterowanie światłami, a więc przełączanie czerwonych, żółtych i zielonych we właściwy sposób.
 
 <!-- ADD PROBLEM DESCRIPTION -->
 
@@ -14,16 +25,16 @@ Named in analogy to Matilda, a traffic managing AI from a webcomic Romantically 
 
 Made during the class; laying out main ideas of the project.
 
-<div align="center"> <img width="70%" src="screenshots/sketch1.png"/></div>
+<div align="center"> <img width="70%" src="screenshots/sketch_1.png"/></div>
 <br>
-<div align="center"> <img width="70%" src="screenshots/sketch2.png"/></div>
+<div align="center"> <img width="70%" src="screenshots/sketch_2.png"/></div>
 <br>
 
 Mock-ups made in Numbers; mostly unchanged in translation from sketch to image.
 
-<div align="center"> <img width="70%" src="screenshots/des1.png"/></div>
+<div align="center"> <img width="70%" src="screenshots/sketch_mockup-1.png"/></div>
 <br>
-<div align="center"> <img width="70%" src="screenshots/des2.png"/></div>
+<div align="center"> <img width="70%" src="screenshots/sketch_mockup-2.png"/></div>
 <br>
 
 ### Implementing Graphics and Data
@@ -40,7 +51,7 @@ The designs were simple and clear, but getting the exactly right shades, border 
 Also, needed to work with pngs for transparency, installed a new program for that even.
 
 Here's a picture of all sprites placed in their proper positions:
-<div align="center"> <img width="70%" src="screenshots/graphics1.png"/></div>
+<div align="center"> <img width="70%" src="screenshots/graphics_all-sprites.png"/></div>
 <br>
 
 The system is divided into sections, named after cardinal directions.
@@ -54,14 +65,14 @@ Added a splash of color to queue numbers and slider values for
 an extra spark tho.
 
 And here's a picture with all the components:
-<div align="center"> <img width="70%" src="screenshots/compo.png"/></div>
+<div align="center"> <img width="70%" src="screenshots/graphics_all-components.png"/></div>
 <br>
 
 Each section has now also a car queue.
 
 Wanting to make sure, that graphics are properly connected to variables, I added a randomly switching function, which just makes it look as if the system was malfunctioning.
 
-<div align="center"> <image width="70%" src="screenshots/broken_1080.gif"/> </div>
+<div align="center"> <image width="70%" src="screenshots/graphics_broken.gif"/> </div>
 
 ### Implementing the Logic
 
@@ -72,48 +83,60 @@ Started with adding a main thread, which will calls out three ticked subthreads 
 
 First implemented was the car generation. It's a simple random function based on a traffic flow variable. There are two traffic flow variables the horizontal and the vertical, with their values dependant on sliders.
 
-<div align="center"> <img width="70%" src="screenshots/traffic1.png"/></div>
+<div align="center"> <img width="70%" src="screenshots/logic_flow-1.png"/></div>
 <br>
-<div align="center"> <img width="70%" src="screenshots/traffic2.png"/></div>
+<div align="center"> <img width="70%" src="screenshots/logic_flow-2.png"/></div>
 <br>
-<div align="center"> <img width="70%" src="screenshots/traffic3.png"/></div>
+<div align="center"> <img width="70%" src="screenshots/logic_flow-3.png"/></div>
 <br>
 
 Then I moved onto making cars actually leave the system.
 Again, just a simple function, checking if a car can drive off.
 
-<div align="center"> <img width="70%" src="screenshots/car1.png"/></div>
+<div align="center"> <img width="70%" src="screenshots/logic_cars-1.png"/></div>
 <br>
-<div align="center"> <img width="70%" src="screenshots/car2.png"/></div>
+<div align="center"> <img width="70%" src="screenshots/logic_cars-2.png"/></div>
 <br>
-<div align="center"> <img width="70%" src="screenshots/car3.png"/></div>
+<div align="center"> <img width="70%" src="screenshots/logic_cars-3.png"/></div>
 <br>
 
 Lastlty I moved onto the automata itself. Started with some sketches (in no particular notation):
 
-<div align="center"> <img width="70%" src="screenshots/sketches.png"/></div>
+<div align="center"> <img width="70%" src="screenshots/logic_diagram-sketches.png"/></div>
 <br>
 
 Ended up with a diagram:
-<div align="center"> <img width="70%" src="screenshots/lights-diagram.png"/></div>
+<div align="center"> <img width="70%" src="screenshots/logic_diagram.png"/></div>
 <br>
-
-<!-- HERE ABOUT TICK KINDS -->
 
 And implemented it:
 
-<div align="center"> <img width="70%" src="screenshots/lights1.png"/></div>
+<div align="center"> <img width="70%" src="screenshots/logic_lights-1.png"/></div>
 <br>
-<div align="center"> <img width="70%" src="screenshots/lights2.png"/></div>
+<div align="center"> <img width="70%" src="screenshots/logic_lights-2.png"/></div>
 <br>
-<div align="center"> <img width="70%" src="screenshots/lights3.png"/></div>
+<div align="center"> <img width="70%" src="screenshots/logic_lights-3.png"/></div>
 <br>
-<div align="center"> <img width="70%" src="screenshots/traffic_state.png"/></div>
+<div align="center"> <img width="70%" src="screenshots/logic_lights-4.png"/></div>
 <br>
 
-And voilà! The simulation was finished. Here are some examples:
+Et voilà! The project was finished.
 
-<!-- ADD EXAMPLES -->
+## Demonstrations
+
+Here's how the program reacts to vertical traffic.
+By default, horizontal lights are green.
+<div align="center"> <img width="70%" src="screenshots/demo_vertical.gif"/></div>
+<br>
+
+Here's how the program reacts to mix of vertical and horizontal traffic.
+The vertical lights stay green only for one tick.
+<div align="center"> <img width="70%" src="screenshots/demo_double-green.gif"/></div>
+<br>
+
+And here's the program with the traffic generetor on:
+<div align="center"> <img width="70%" src="screenshots/demo_generation.gif"/></div>
+<br>
 
 ## Statistics
 
